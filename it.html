@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Siya! 🎂✨</title>
+    <!-- Fonts & Libraries -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            color: #333;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Continuous Live Balloons Background */
+        .balloon-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-balloon {
+            position: absolute;
+            bottom: -150px;
+            width: 50px;
+            height: 70px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            opacity: 0.7;
+            animation: floatUp 10s linear infinite;
+        }
+
+        .floating-balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 22px;
+            width: 2px;
+            height: 25px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-120vh) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Animated Title */
+        header {
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 3.5rem;
+            color: #d63384;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+            animation: pulseTitle 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseTitle {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #4a4a4a;
+            margin-top: 5px;
+        }
+
+        /* Main Glassmorphism Wish Card */
+        .wish-card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .wish-card p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        /* Realistic Flower Bouquet Section */
+        .bouquet-section {
+            margin: 40px auto;
+            max-width: 500px;
+        }
+
+        .bouquet-box {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .bouquet-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(214, 51, 132, 0.25);
+        }
+
+        .bouquet-svg {
+            width: 180px;
+            height: 180px;
+            filter: drop-shadow(0px 8px 12px rgba(0, 0, 0, 0.15));
+            transition: transform 0.5s ease;
+        }
+
+        .bouquet-box:hover .bouquet-svg {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        /* 4 Meme / Photo Flip Cards Section */
+        .meme-container {
+            margin: 50px auto;
+            max-width: 1100px;
+        }
+
+        .meme-container h2 {
+            font-family: 'Fredoka One', cursive;
+            color: #6c5ce7;
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+        }
+
+        .meme-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 240px;
+            height: 310px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .flip-card-front {
+            background: linear-gradient(135deg, #a8edd9, #fed6e3);
+            color: #333;
+        }
+
+        .flip-card-front h3 {
+            font-size: 1.3rem;
+            color: #2d3436;
+        }
+
+        .flip-card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-back img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .flip-card-back p {
+            margin-top: 10px;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.9rem;
+        }
+
+        /* Action Buttons */
+        .celebrate-btn {
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .celebrate-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 30px rgba(255, 75, 43, 0.6);
+        }
+
+        /* Music Floating Toggle */
+        .music-btn {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #d63384;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .music-btn:hover {
+            transform: scale(1.15) rotate(15deg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Continuous Floating Balloons Background -->
+    <div class="balloon-bg" id="balloonBg"></div>
+
+    <!-- Main Container -->
+    <div class="main-content">
+
+        <!-- Header -->
+        <header>
+            <h1>🎉 Happy Birthday, Siya! 🎂</h1>
+            <p class="subtitle">यह खास दिन आपके लिए ढेर सारी खुशियाँ और हंसी लेकर आए! ✨</p>
+        </header>
+
+        <!-- Main Wish Card -->
+        <div class="wish-card">
+            <h2 style="color: #d63384; margin-bottom: 15px; font-family: 'Fredoka One';">A Note For Siya 💌</h2>
+            <p>
+                जन्मदिन बहुत-बहुत मुबारक हो, Siya! 🥳<br>
+                आपकी उपस्थिति हमेशा आसपास की जगह को और खुशनुमा बना देती है।
+                भगवान करे आपका यह आने वाला साल नए मुकाम, ढेर सारे हसीन लम्हों और ढेर सारी खुशियों से भरा रहे! हमेशा ऐसी
+                ही मुस्कुराती रहो। 🌸💫
+            </p>
+            <button class="celebrate-btn" onclick="firePartyPoppers()">ग्रैंड सेलिब्रेशन धमाका! 🎊</button>
+        </div>
+
+        <!-- Realistic Animated Bouquet Box -->
+        <div class="bouquet-section">
+            <div class="bouquet-box" onclick="giftFlowers()">
+                <h3 style="color: #ff4757; margin-bottom: 15px; font-size: 1.3rem;">💐 Click to Receive Your Bouquet 💐
+                </h3>
+                <!-- High-Quality Animated SVG Flower Bouquet -->
+                <svg class="bouquet-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M70 140 L100 190 L130 140 Z" fill="#ff4757" />
+                    <path d="M85 130 Q100 145 115 130 Q100 160 85 130" fill="#ff6b81" />
+                    <path d="M50 110 Q30 80 70 80 Z" fill="#2ed573" />
+                    <path d="M150 110 Q170 80 130 80 Z" fill="#2ed573" />
+                    <circle cx="75" cy="85" r="22" fill="#ff4757" />
+                    <circle cx="75" cy="85" r="14" fill="#ff6b81" />
+                    <circle cx="125" cy="85" r="22" fill="#ff4757" />
+                    <circle cx="125" cy="85" r="14" fill="#ff6b81" />
+                    <circle cx="100" cy="65" r="26" fill="#ff6b81" />
+                    <circle cx="100" cy="65" r="16" fill="#ffa502" />
+                    <circle cx="100" cy="105" r="20" fill="#eccc68" />
+                    <circle cx="100" cy="105" r="12" fill="#ffffff" />
+                </svg>
+                <p style="margin-top: 10px; font-weight: 600; color: #555;">(इसे टैप करके Siya के लिए फूलों की बारिश
+                    करें! 🌸)</p>
+            </div>
+        </div>
+
+        <!-- 4 Photo / Meme Flip Cards Section -->
+        <div class="meme-container">
+            <h2>Memories & Fun Gallery 📸</h2>
+            <div class="meme-grid">
+
+                <!-- Photo 1 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Secret #1 🤫</h3>
+                            <p style="margin-top: 10px; font-size: 0.85rem;">(टैप या माउस ले जाओ)</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="photo1.jpg" alt="Photo 1" onerror="this.src='https://i.imgflip.com/1ur9b0.jpg'">
+                            <p>जब सब पूछें: "पार्टी कहाँ है भाई?" 🍕</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 2 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Secret #2 😜</h3>
+                            <p style="margin-top: 10px; font-size: 0.85rem;">(दूसरा सरप्राइज)</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="photo2.jpg" alt="Photo 2" onerror="this.src='https://i.imgflip.com/26am.jpg'">
+                            <p>उम्र 1 साल और बढ़ गई, पर हरकते वही! 😂</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 3 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Secret #3 🎂</h3>
+                            <p style="margin-top: 10px; font-size: 0.85rem;">(केक लवर्स)</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="photo3.jpg" alt="Photo 3" onerror="this.src='https://i.imgflip.com/1bij.jpg'">
+                            <p>जब पूरे केक पर अकेले कब्ज़ा करना हो! 😋</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 4 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h3>Secret #4 ✨</h3>
+                            <p style="margin-top: 10px; font-size: 0.85rem;">(स्पेशल यादें)</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <img src="photo4.jpg" alt="Photo 4" onerror="this.src='https://i.imgflip.com/1otk96.jpg'">
+                            <p>हमेशा ऐसे ही हंसती मुस्कुराती रहो! 🌸</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Music Button -->
+    <button class="music-btn" onclick="toggleMusic()">🎵</button>
+    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Generate Dynamic Floating Balloons Continuous Animation
+        const balloonBg = document.getElementById('balloonBg');
+        const colors = ['#ff4757', '#ff6b81', '#74b9ff', '#a29bfe', '#ffeaa7', '#fd79a8'];
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('floating-balloon');
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const left = Math.random() * 100;
+            const duration = Math.random() * 6 + 6;
+            const size = Math.random() * 20 + 40;
+
+            balloon.style.backgroundColor = color;
+            balloon.style.left = left + 'vw';
+            balloon.style.animationDuration = duration + 's';
+            balloon.style.width = size + 'px';
+            balloon.style.height = (size * 1.3) + 'px';
+
+            balloonBg.appendChild(balloon);
+
+            setTimeout(() => {
+                balloon.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(createBalloon, 800);
+
+        window.onload = () => {
+            firePartyPoppers();
+        };
+
+        function firePartyPoppers() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: {y: 0.6}
+            });
+        }
+
+        function giftFlowers() {
+            var scalar = 2;
+            var flowerShapes = confetti.shapeFromText({text: '🌸', scalar});
+
+            confetti({
+                shapes: [flowerShapes],
+                particleCount: 30,
+                scalar: scalar,
+                spread: 100,
+                origin: {y: 0.6}
+            });
+
+            alert("💐 Siya के लिए यह सुंदर गुलदस्ता!");
+        }
+
+        const music = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+            } else {
+                music.play();
+                isPlaying = true;
+            }
+        }
+    </script>
+</body>
+
+</html>
